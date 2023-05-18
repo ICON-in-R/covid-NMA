@@ -1,60 +1,53 @@
 #Consistency model
-model{
-#Overall level with all studies
-#for (k in 2:ntALL){ # random effects in combining studies from different #study designs
-	#dRCT[k]~dnorm(d[k],tauALL)
-	#dCC[k]~dnorm(d[k],tauALL)
-	#dRC[k]~dnorm(d[k],tauALL)
-	#dPC[k]~dnorm(d[k],tauALL)}
+
+model {
+
+	#Overall level with all studies
+	#for (k in 2:ntALL){ # random effects in combining studies from different study designs
+		#dRCT[k]~dnorm(d[k],tauALL)
+		#dCC[k]~dnorm(d[k],tauALL)
+		#dRC[k]~dnorm(d[k],tauALL)
+		#dPC[k]~dnorm(d[k],tauALL)
+	#}
 	
 dRCT[2]~dnorm(d[2],tauALL)
-
-dCC[3]~dnorm(d[3],tauALL)
-dPC[3]~dnorm(d[3],tauALL)
-dRC[3]~dnorm(d[3],tauALL)
 dRCT[3]~dnorm(d[3],tauALL)
-
-dCC[4]~dnorm(d[4],tauALL)
-dPC[4]~dnorm(d[4],tauALL)
-dRC[4]~dnorm(d[4],tauALL)
 dRCT[4]~dnorm(d[4],tauALL)
-
-dPC[5]~dnorm(d[5],tauALL)
-dRC[5]~dnorm(d[5],tauALL)
 dRCT[5]~dnorm(d[5],tauALL)
-
-dCC[6]~dnorm(d[6],tauALL)
-
 dRCT[7]~dnorm(d[7],tauALL)
-
 dRCT[8]~dnorm(d[8],tauALL)
-
-dPC[9]~dnorm(d[9],tauALL)
 dRCT[9]~dnorm(d[9],tauALL)
-
-dCC[10]~dnorm(d[10],tauALL)
-dPC[10]~dnorm(d[10],tauALL)
-dRC[10]~dnorm(d[10],tauALL)
-
-dPC[11]~dnorm(d[11],tauALL)
-dCC[11]~dnorm(d[11],tauALL)
-
-dCC[12]~dnorm(d[12],tauALL)
-dPC[12]~dnorm(d[12],tauALL)
 dRCT[12]~dnorm(d[12],tauALL)
-
 dRCT[13]~dnorm(d[13],tauALL)
 
-dRC[14]~dnorm(d[14],tauALL)
-dPC[14]~dnorm(d[14],tauALL)
-
-dRC[15]~dnorm(d[15],tauALL)
-
+dCC[3]~dnorm(d[3],tauALL)
+dCC[4]~dnorm(d[4],tauALL)
+dCC[6]~dnorm(d[6],tauALL)
+dCC[10]~dnorm(d[10],tauALL)
+dCC[11]~dnorm(d[11],tauALL)
+dCC[12]~dnorm(d[12],tauALL)
 dCC[16]~dnorm(d[16],tauALL)
 
+dPC[3]~dnorm(d[3],tauALL)
+dPC[4]~dnorm(d[4],tauALL)
+dPC[5]~dnorm(d[5],tauALL)
+dPC[9]~dnorm(d[9],tauALL)
+dPC[10]~dnorm(d[10],tauALL)
+dPC[11]~dnorm(d[11],tauALL)
+dPC[12]~dnorm(d[12],tauALL)
+dPC[14]~dnorm(d[14],tauALL)
+
+dRC[3]~dnorm(d[3],tauALL)
+dRC[4]~dnorm(d[4],tauALL)
+dRC[5]~dnorm(d[5],tauALL)
+dRC[10]~dnorm(d[10],tauALL)
+dRC[14]~dnorm(d[14],tauALL)
+dRC[15]~dnorm(d[15],tauALL)
 dRC[17]~dnorm(d[17],tauALL)
 
-for (k in 2:ntALL){d[k]~dnorm(0.1,0.001)}
+for (k in 2:ntALL){
+	d[k]~dnorm(0.1,0.001)
+}
 d[1]<-0
 
 sdALL~dunif(0,10) # prior for overall heterogeneity
