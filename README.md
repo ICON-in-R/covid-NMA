@@ -1,6 +1,6 @@
 # Covid NMA analysis
 
-A network meta-analysis using data from both RCTs and observation studies.
+A network meta-analysis using data from both RCTs and observational studies.
 
 Based on code from:
 
