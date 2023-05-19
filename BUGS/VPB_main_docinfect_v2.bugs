@@ -5,16 +5,11 @@ model {
 	# Overall level with all studies
 	# random effects in combining studies from different study designs
 	
-	nt_cuml <- 0
-	
 	for (s in 1:4) {
-	  for (i in nt_cuml + 1:nts[s]) {
-  	  d_design[ts[i], s] ~ dnorm(d[ts[i]], tauAll)
+	  for (i in nt_cumul[s]:(nt_cumul[s+1]-1)) {
+  	  d_design[ts[i], s] ~ dnorm(d[ts[i]], tauALL)
 	  }
-	  
-    nt_cuml <- nt_cuml + nts[s]
 	}
-  
 
   for (k in 2:ntALL) {
 	  d[k] ~ dnorm(0.1, 0.001)
@@ -22,7 +17,7 @@ model {
   
   d[1] <- 0
 
-  sdALL ~ dunif(0,10)  # prior for overall heterogeneity
+  sdALL ~ dunif(0, 10)  # prior for overall heterogeneity
   tauALL <- pow(sdALL,-2)
 
   for (c in 1:(ntALL-1)) {  # pairwise comparisons
@@ -114,7 +109,7 @@ for (i in offset[4]:(offset[5]-1)) {  # loop through studies
   	taudCC[i, t[i,k]] <- tauCC *2*(k-1)/k
 	
   	# multi-arm adjustment
-  	wCC[i,k] <- deltaCC[i, t[i,k]] - d_design[t[i,k]], 4 + d_design[t[i,1], 4]
+  	wCC[i,k] <- deltaCC[i, t[i,k]] - d_design[t[i,k], 4] + d_design[t[i,1], 4]
   	swCC[i,k] <- sum(wCC[i, 2:k-1])/(k-1)
 	}
 }

@@ -29,15 +29,16 @@ tlong <-
 
 data <-
   list(
-    ntALL = max(times, na.rm = TRUE),  # maximum time across all studies
+    ntALL = max(times, na.rm = TRUE),    # maximum time across all studies
     design_idx = dat_raw$design_idx,
     offset = c(0, which(diff(dat_raw$design_idx) == 1), nrow(dat_raw)) + 1,
-    nts = pull(summarise(tlong, n())),   # number of unique time points per study designs
-    ts = pull(tlong),                    # unique times per study design
+    # cumulative number of unique time points per study designs
+    nt_cumul = c(1, 1 + cumsum(pull(summarise(tlong, n())))),
+    ts = pull(tlong),            # unique times per study design
+    na = na,
     t = times,
     r = dat_raw[, grepl("r\\d", names(dat_raw))],
-    n = dat_raw[, grepl("n\\d", names(dat_raw))],
-    na = na)
+    n = dat_raw[, grepl("n\\d", names(dat_raw))])
 
 para <- c("d",      # outcome at each time, log odds of intervention k
           "sdALL",  # overall between-trial heterogeneity
