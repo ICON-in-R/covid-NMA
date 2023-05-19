@@ -2,6 +2,7 @@
 # original script
 # from Au (2022)
 
+
 library(R2jags)
 library(dplyr)
 
@@ -49,3 +50,4 @@ jagsfit <- jags(
   quiet = FALSE)
 
 traceplot(jagsfit)
+
