@@ -10,11 +10,12 @@ library(dplyr)
 # 3: prospective cohort studies
 # 4: case-control
 
-# select data
-filename <- here::here("data/export_VPB_main_docinfect_v2.csv")
+load(file = "data/cleaned_covid_data.RData")
 
-dat_raw <-
-  read.csv(filename, header = TRUE, fileEncoding = "UTF-8-BOM")
+# remove data with NA
+dat <- na.omit(dat)
+
+
 
 # treatments across studies
 times <- dat_raw[, grepl("t\\d", names(dat_raw))]
