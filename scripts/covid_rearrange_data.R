@@ -35,7 +35,7 @@ dat <-
   data.frame(check.names = TRUE) |>
   dplyr::filter(Included.in.NMA == 1,
                 if (basecase) Base.case == "X" else TRUE,
-                VE.against.infection == "Y") |> 
+                COVID.infection == "Y") |> 
   select(Ref.ID, Study.design, Design.ID, Intervention.name..standardized., Total.N, n.of.events)
 
 
@@ -47,7 +47,6 @@ dat_clean <-
     n.of.events = ifelse(n.of.events == "NR", NA, n.of.events),
     Total.N = ifelse(Total.N == "NR", NA, Total.N),
     Intervention.name..standardized. = factor(Intervention.name..standardized.),
-    interv_id = as.numeric(Intervention.name..standardized.),
     Study.design = ifelse(Study.design %in% c("Prospective cohort study",
                                               "Prospective, observational study"),
                           yes = "Prospective",
@@ -58,6 +57,22 @@ dat_clean <-
                                       yes = "Retrospective",
                                       no = Study.design))) |> 
   group_by(Ref.ID) |>
-  arrange(interv_id) |> 
-  mutate(tx = 1:n())
+  arrange(Design.ID) |> 
+  mutate(arm = 1:n())
 
+##TODO:
+## rearrange from long to wide format
+
+# pivot_wider() by arm
+
+library(reshape2)
+
+tx_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "Intervention.name..standardized.")
+N_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "Total.N")
+n_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "n.of.events")
+
+xx <- 
+  merge(tx_wide, N_wide, by = "Ref.ID") |> 
+  merge(n_wide, by = "Ref.ID")
+
+write.csv(xx, file = "data/BUGS_input_data.csv")
