@@ -14,8 +14,37 @@ library(dplyr)
 outcome_names <-
   c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
 
-outcome <- outcome_names[2]
+outcome <- outcome_names[5]
 dat_raw <- read.csv(glue::glue("data/BUGS_input_data_{outcome}.csv"))
+
+##TODO: if a design is missing in the data, include dummy entry
+
+if (!1 %in% dat_raw$Design.ID) {
+  new_row <- data.frame(0, 0, "Randomized clinical trial", 1, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
+  
+  names(new_row) <- names(dat_raw)
+  
+  dat_raw <- rbind(new_row, dat_raw)
+}
+
+if (!3 %in% dat_raw$Design.ID) {
+  new_row <- data.frame(0, 0, "Prospective observational study", 3, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
+  
+  names(new_row) <- names(dat_raw)
+  
+  dat_raw <- rbind(new_row, dat_raw)
+}
+
+if (!4 %in% dat_raw$Design.ID) {
+  new_row <- data.frame(0, 0, "Test-negative", 4, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
+  
+  names(new_row) <- names(dat_raw)
+  
+  dat_raw <- rbind(new_row, dat_raw)
+}
+
+dat_raw <- dat_raw[order(dat_raw$Design.ID), ]
+
 
 # treatments across studies
 arms <- dat_raw[, grepl("t\\d", names(dat_raw))]
