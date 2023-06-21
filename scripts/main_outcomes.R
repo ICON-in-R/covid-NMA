@@ -81,7 +81,7 @@ para <- c("d",      # outcome at each time, log odds of intervention k
           "rk")     # rank
 
 bugs_filename <- here::here("BUGS/bugs_code.txt")
-n.iter <- 100000
+n.iter <- 10000
 
 jagsfit <- jags(
   data = data,
