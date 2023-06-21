@@ -1,5 +1,14 @@
 
-#
+#' Clean covid data
+#'
+#' @param xl_data 
+#' @param outcome_nm 
+#' @param basecase 
+#' @param tx_levels 
+#'
+#' @return
+#' @export
+#'
 clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
   dat_clean <-
     xl_data |> 
