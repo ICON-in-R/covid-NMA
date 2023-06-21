@@ -1,12 +1,12 @@
-
 # clean covid data
-# an prep for BUGS analysis
+# and prep for BUGS analysis
 
 library(dplyr)
 
 
 filename <-
-  "../../ICON/data/4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v0.4_09Junel2023_NMA_MN_AC_SK.xlsx"
+  # "N:/Organization/ICO/GHEORE/Projects/Moderna/4428-0013_Market Access activities for SPIKEVAX/06 Covid NMA/08 Evidence synthesis/NMA/4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v0.4_09Junel2023_NMA_MN_AC_SK.xlsx"
+  "../../ICON/data/4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v1.0_20Junel2023.xlsx"
 
 xl_data <- readxl::read_xlsx(path = filename,
                              sheet = "for Nathan",
@@ -28,25 +28,27 @@ colnames(xl_data) <- coalesce(colnamesA3, colnamesA2)
 # filter rows
 
 # run basecase scenario?
-basecase <- FALSE
+basecase <- TRUE
+
+#rename(xl_data, not_NMA_1 = "Subgroup/Outcome.not.chosen.for.NMA")
 
 dat <-
   xl_data |> 
   data.frame(check.names = TRUE) |>
-  dplyr::filter(Included.in.NMA == 1,
-                if (basecase) Base.case == "X" else TRUE,
-                COVID.infection == "Y") |> 
+  dplyr::filter((Included.in.NMA == 1 & not_NMA==0),       # using the extra created column not_NMA to filter further
+                if (basecase) Base.case == "X" else FALSE, # keep if Base.case==X
+                COVID.infection == "Y") |>                 # use COVID.infection, Symptomatic.infection, Severe.Infection.All, Hospitalizations, Deaths for binary outcomes
   select(Ref.ID, Study.design, Design.ID, Intervention.name..standardized., Total.N, n.of.events)
-
 
 # dat <- read.csv(file = "data/cleaned_covid_data.csv")
 
 dat_clean <- 
   dat |> 
   mutate(
-    n.of.events = ifelse(n.of.events == "NR", NA, n.of.events),
-    Total.N = ifelse(Total.N == "NR", NA, Total.N),
+    n.of.events = as.numeric(ifelse(n.of.events == "NR", NA, n.of.events)),
+    Total.N = as.numeric(ifelse(Total.N == "NR", NA, Total.N)),
     Intervention.name..standardized. = factor(Intervention.name..standardized.),
+    interv_id = as.numeric(Intervention.name..standardized.),
     Study.design = ifelse(Study.design %in% c("Prospective cohort study",
                                               "Prospective, observational study"),
                           yes = "Prospective",
@@ -57,22 +59,32 @@ dat_clean <-
                                       yes = "Retrospective",
                                       no = Study.design))) |> 
   group_by(Ref.ID) |>
-  arrange(Design.ID) |> 
-  mutate(arm = 1:n())
+  arrange(interv_id) |> 
+  mutate(tx = 1:n(),
+         na = n()) |>
+  arrange(tx) |> 
+  ungroup() |> 
+  arrange(Ref.ID) |> 
+  select(Ref.ID, Design.ID, Total.N, n.of.events, interv_id, na, tx)
 
-##TODO:
-## rearrange from long to wide format
+# reshape to wide (default using new `time` column)
 
-# pivot_wider() by arm
+# clean up the variable names
+BUGS_input_data <-
+  dat_clean |> 
+  as.data.frame() |> 
+  reshape(idvar = c("Ref.ID", "Design.ID", "na"),
+          timevar = "tx", direction = "wide") |> 
+  relocate(starts_with("Total.N"),
+             starts_with("n.of.events"),
+             starts_with("interv_id"),
+           .after = c("Ref.ID", "Design.ID", "na"))
 
-library(reshape2)
+column_names <- names(BUGS_input_data)
 
-tx_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "Intervention.name..standardized.")
-N_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "Total.N")
-n_wide <- dcast(dat_clean, Ref.ID ~ arm, value.var = "n.of.events")
+colnames(BUGS_input_data) <- 
+  gsub("Total.N.", replacement = "n", column_names) |> 
+  gsub("n.of.events.", replacement = "r", x = _) |> 
+  gsub("interv_id.", replacement = "t", x = _)
 
-xx <- 
-  merge(tx_wide, N_wide, by = "Ref.ID") |> 
-  merge(n_wide, by = "Ref.ID")
-
-write.csv(xx, file = "data/BUGS_input_data.csv")
+write.csv(BUGS_input_data, file = "data/BUGS_input_data.csv")
