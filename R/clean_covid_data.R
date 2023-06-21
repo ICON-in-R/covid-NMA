@@ -21,6 +21,8 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
     mutate(
       n.of.events = as.numeric(ifelse(n.of.events == "NR", NA, n.of.events)),
       Total.N = as.numeric(ifelse(Total.N == "NR", NA, Total.N)),
+      n.of.events = round(n.of.events, 0),
+      Total.N = round(Total.N, 0),
       Intervention.name..standardized. = factor(Intervention.name..standardized.,
                                                 levels = tx_levels),
       tx_id = as.numeric(Intervention.name..standardized.),
