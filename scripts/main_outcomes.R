@@ -17,7 +17,7 @@ outcome_names <-
 outcome <- outcome_names[3]
 dat_raw <- read.csv(glue::glue("data/BUGS_input_data_{outcome}.csv"))
 
-##TODO: if a design is missing in the data, include dummy entry
+# if a design is missing in the data, include dummy entry
 
 if (!1 %in% dat_raw$Design.ID) {
   new_row <- data.frame(0, -1, "Randomized clinical trial", 1, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
