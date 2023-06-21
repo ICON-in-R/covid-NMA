@@ -1,6 +1,6 @@
 
 #
-clean_covid_data <- function(xl_data, outcome_nm) {
+clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
   dat_clean <-
     xl_data |> 
     data.frame(check.names = TRUE) |>

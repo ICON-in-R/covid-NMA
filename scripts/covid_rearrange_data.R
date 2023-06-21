@@ -43,7 +43,7 @@ outcomes <-
 # create input data
 
 for (i in outcomes) {
-  BUGS_input_data <- clean_covid_data(xl_data, i)
+  BUGS_input_data <- clean_covid_data(xl_data, i, basecase, tx_levels)
   
   file_append <- gsub("\\.", "_", i)
   write.csv(BUGS_input_data, file = glue::glue("data/BUGS_input_data_{file_append}.csv"))
