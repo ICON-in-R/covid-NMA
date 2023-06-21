@@ -1,5 +1,5 @@
 
-#' Clean covid data
+#' Clean COVID data
 #'
 #' @param xl_data 
 #' @param outcome_nm 
@@ -39,7 +39,7 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
            na = n()) |>
     arrange(arm) |> 
     ungroup() |> 
-    arrange(Ref.ID) |> 
+    arrange(Design.ID, Ref.ID) |>
     rename(tx_name = Intervention.name..standardized.)
   
   # reshape to wide format for BUG model input

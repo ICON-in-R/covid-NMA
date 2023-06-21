@@ -1,7 +1,10 @@
-# clean covid SLR data
+# clean COVID SLR data
 # and prep for BUGS NMA analysis
 
 library(dplyr)
+
+###################
+# read in raw data
 
 dir_data <- "../../ICON/data/"
       # "N:/Organization/ICO/GHEORE/Projects/Moderna/4428-0013_Market Access activities for SPIKEVAX/06 Covid NMA/08 Evidence synthesis/NMA/"
@@ -29,7 +32,7 @@ colnames(xl_data) <- coalesce(colnamesA3, colnamesA2)
 ##############
 # user inputs
 
-# run basecase scenario?
+# run base case scenario?
 basecase <- TRUE
 
 # first baseline, last intervention of interest

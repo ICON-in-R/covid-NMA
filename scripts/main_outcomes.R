@@ -1,5 +1,5 @@
 
-# modified script
+# modified BUGS running script
 # from Au (2022)
 
 library(R2jags)
@@ -11,19 +11,20 @@ library(dplyr)
 # 3: prospective cohort studies
 # 4: case-control
 
-load(file = "data/cleaned_covid_data.RData")
+outcome_names <-
+  c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
 
-# remove data with NA
-dat <- na.omit(dat)
+outcome <- outcome_names[2]
+dat_raw <- read.csv(glue::glue("data/BUGS_input_data_{outcome}.csv"))
 
 # treatments across studies
-times <- dat_raw[, grepl("t\\d", names(dat_raw))]
-na <- apply(times, 1, \(x) sum(!is.na(x)))         # number of arms per study
+arms <- dat_raw[, grepl("t\\d", names(dat_raw))]
+na <- apply(arms, 1, \(x) sum(!is.na(x)))         # number of arms per study
 max_t_idx <- max(na)
 
 # unique treatments per study designs
 tlong <- 
-  cbind(times, id = dat_raw$design_idx) |> 
+  cbind(arms, id = dat_raw$Design.ID) |> 
   reshape2::melt(id.vars = "id") |> 
   group_by(id) |> 
   distinct(value) |> 
@@ -32,14 +33,13 @@ tlong <-
 
 data <-
   list(
-    ntALL = max(times, na.rm = TRUE),    # maximum number of treatments across all studies
-    design_idx = dat_raw$design_idx,
-    offset = c(0, which(diff(dat_raw$design_idx) == 1), nrow(dat_raw)) + 1,  # index of first trial in each design
+    ntALL = max(arms, na.rm = TRUE),    # maximum number of treatments across all studies
+    offset = c(0, which(diff(dat_raw$Design.ID) == 1), nrow(dat_raw)) + 1,  # index of first trial in each design
     nt_cumul =
-      c(1, 1 + cumsum(pull(summarise(tlong, n())))),  # cumulative number of unique treatments per study designs
+      c(1, 1 + cumsum(pull(summarise(tlong, n())))),  # cumulative number/offset of unique treatments per study designs
     ts = pull(tlong),            # unique treatments per study design
     na = na,                     # number of arms per study
-    t = times,
+    t = arms,
     r = dat_raw[, grepl("r\\d", names(dat_raw))],  # number of events
     n = dat_raw[, grepl("n\\d", names(dat_raw))])  # sample size
 
@@ -78,3 +78,4 @@ jagsfit <- jags(
   jags.module = c("glm", "dic"),
   quiet = FALSE)
 
+save(jagsfit, file = glue::glue("data/jagsfit_{outcome}.RData"))
