@@ -22,7 +22,7 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
     treatment_nm <- "Placebo"
     OR_nm <- "or23"
     ytitle <- c("Odds Ratio of Moderna vs. Other")
-    txcolor <- c("#00CCFF", "#000000")
+    txcolor <- c("#000000", "#00CCFF")
   }
   
   plot_dat <- 
@@ -34,14 +34,15 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
            # or31 = 1/or13,
            # or32 = or13/or12
            ) |> 
-    reframe("Pfizer" = quantile(!!as.name(OR_nm), c(0.25, 0.5, 0.75)),
-            "{treatment_nm}" := quantile(or13, c(0.25, 0.5, 0.75)),
+    reframe("{treatment_nm}" := quantile(or13, c(0.25, 0.5, 0.75)),
+            "Pfizer" = quantile(!!as.name(OR_nm), c(0.25, 0.5, 0.75)),
             q = c(2.5, 50, 97.5)) |>
     reshape2::melt(id.vars = "q",
                    variable.name = "treatment") |> 
     dcast(treatment ~ q) |> 
     data.frame(check.names = TRUE) |> 
-    mutate(treatment = factor(treatment))
+    mutate(treatment = factor(treatment, levels = c("Placebo", "Pfizer", "Moderna"))) |> 
+    arrange(treatment)
   
   nt <- 3
   
