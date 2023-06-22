@@ -18,7 +18,7 @@ for (outcome in outcome_names) {
   BUGSoutput <- jagsfit$BUGSoutput
   simsmatrix <- BUGSoutput$sims.matrix
   
-  # CROSS-TABLE FOR ODD RATIO
+  # CROSS-TABLE FOR ODDS RATIO
   
   tab_dat <-
     simsmatrix |> 
