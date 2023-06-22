@@ -14,7 +14,7 @@ library(dplyr)
 outcome_names <-
   c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
 
-outcome <- outcome_names[3]
+outcome <- outcome_names[1]
 dat_raw <- read.csv(glue::glue("data/BUGS_input_data_{outcome}.csv"))
 
 # if a design is missing in the data, include dummy entry
@@ -78,7 +78,8 @@ para <- c("d",      # outcome at each time, log odds of intervention k
           "sdRC",   # heterogeneity between retrospective cohort studies
           "sdPC",   # heterogeneity between prospective cohort studies
           "lor",    # log odds ratio
-          "rk")     # rank
+          "rk",     # rank
+          "SUCRA")
 
 bugs_filename <- here::here("BUGS/bugs_code.txt")
 n.iter <- 10000

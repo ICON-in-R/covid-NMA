@@ -1,0 +1,4 @@
+"","comp","placebo","pfizer","moderna"
+"1","placebo",0,NA,NA
+"2","pfizer",0.95,0,NA
+"3","moderna",0.96,0.6,0
