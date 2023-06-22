@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_covid_data.R
 \name{clean_covid_data}
 \alias{clean_covid_data}
-\title{Clean covid data}
+\title{Clean COVID data}
 \usage{
 clean_covid_data(xl_data, outcome_nm, basecase, tx_levels)
 }
@@ -16,5 +16,5 @@ clean_covid_data(xl_data, outcome_nm, basecase, tx_levels)
 \item{tx_levels}{}
 }
 \description{
-Clean covid data
+Clean COVID data
 }
