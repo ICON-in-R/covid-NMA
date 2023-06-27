@@ -1,5 +1,6 @@
 
 # modified BUGS running script
+# using 
 # from Au (2022)
 
 library(R2jags)
@@ -11,37 +12,16 @@ library(dplyr)
 # 3: prospective cohort studies
 # 4: case-control
 
+#################
+# select outcome
+
 outcome_names <-
   c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
 
-outcome <- outcome_names[1]
-dat_raw <- read.csv(glue::glue("data/BUGS_input_data_{outcome}.csv"))
+outcome <- outcome_names[4]
+dat_raw <- read.csv(file = here::here(glue::glue("data/BUGS_input_data_{outcome}.csv")))
 
-# if a design is missing in the data, include dummy entry
-
-if (!1 %in% dat_raw$Design.ID) {
-  new_row <- data.frame(0, -1, "Randomized clinical trial", 1, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-  
-  names(new_row) <- names(dat_raw)
-  
-  dat_raw <- rbind(new_row, dat_raw)
-}
-
-if (!3 %in% dat_raw$Design.ID) {
-  new_row <- data.frame(0, -3, "Prospective observational study", 3, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-  
-  names(new_row) <- names(dat_raw)
-  
-  dat_raw <- rbind(new_row, dat_raw)
-}
-
-if (!4 %in% dat_raw$Design.ID) {
-  new_row <- data.frame(0, -4, "Test-negative", 4, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-  
-  names(new_row) <- names(dat_raw)
-  
-  dat_raw <- rbind(new_row, dat_raw)
-}
+dat_raw <- add_dummy_design_data(dat_raw)
 
 dat_raw <- dat_raw[order(dat_raw$Design.ID), ]
 
@@ -82,7 +62,11 @@ para <- c("d",      # outcome at each time, log odds of intervention k
           "SUCRA")
 
 bugs_filename <- here::here("BUGS/bugs_code.txt")
-n.iter <- 10000
+
+# corresponding with other analyses
+n.iter <- 100000
+n.burn <- 20000
+n.thin <- 80
 
 jagsfit <- jags(
   data = data,
@@ -91,8 +75,8 @@ jagsfit <- jags(
   model.file = bugs_filename,
   n.chains = 3,
   n.iter = n.iter,
-  n.burnin = floor(n.iter / 5),
-  n.thin = max(1, floor((n.iter - floor(n.iter / 5)) / 1000)),
+  n.burnin = n.burn,
+  n.thin = n.thin,
   DIC = TRUE,
   working.directory = NULL,
   jags.seed = 123,

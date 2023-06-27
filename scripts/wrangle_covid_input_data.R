@@ -7,10 +7,9 @@ library(dplyr)
 # read in raw data
 
 dir_data <- "../../ICON/data/"
-      # "N:/Organization/ICO/GHEORE/Projects/Moderna/4428-0013_Market Access activities for SPIKEVAX/06 Covid NMA/08 Evidence synthesis/NMA/"
   
 filename <-
-  paste0(dir_data, "4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v1.1_20June2023.xlsx")
+  paste0(dir_data, "27062023-4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies.xlsx")
 
 xl_data <- readxl::read_xlsx(path = filename,
                              sheet = "for Nathan",
