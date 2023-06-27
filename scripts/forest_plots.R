@@ -31,5 +31,23 @@ for (i in outcome_names) {
     height = 5,
     units = "in",
     dpi = 640)
+  
+  forest_plot(i, logOR = TRUE)
+  
+  ggsave(
+    filename = glue::glue("plots/forest_plot_{i}_logOR.jpg"),
+    width = 8,
+    height = 5,
+    units = "in",
+    dpi = 640)
+  
+  forest_plot(i, vs_placebo = FALSE, logOR = TRUE)
+  
+  ggsave(
+    filename = glue::glue("plots/forest_plot_vs_Moderna_{i}_logOR.jpg"),
+    width = 8,
+    height = 5,
+    units = "in",
+    dpi = 640)
 }
 

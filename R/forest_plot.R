@@ -1,12 +1,20 @@
 
 #' Forest plot
 #'
-#' @param outcome 
+#' @param outcome String
+#' @param vs_placebo Placebo as comparison otherwise Moderna vs all other comparisons
+#' @param logOR Scale
+#'
 #' @import dplyr reshape2
 #' @return
 #' @export
 #'
-forest_plot <- function(outcome, vs_placebo = TRUE) {
+forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
+  
+  new_labels <- 
+    c(Pfizer = "Comirnaty",
+      Moderna = "Spikevax",
+      Placebo = "Placebo/Unvaccinated")
   
   load(glue::glue("data/jagsfit_{outcome}.RData"))
   
@@ -16,12 +24,12 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
   if (vs_placebo) {
     treatment_nm <- "Moderna"
     OR_nm <- "or12"
-    ytitle <- "Odds Ratio vs. Placebo"
+    ytitle <- "Odds Ratio vs. Placebo/Unvaccinated"
     txcolor <- c("#00CCFF", "#FF0000")
   } else {
     treatment_nm <- "Placebo"
     OR_nm <- "or23"
-    ytitle <- c("Odds Ratio of Moderna vs. Other")
+    ytitle <- c("Odds Ratio of Spikevax vs. Other")
     txcolor <- c("#000000", "#00CCFF")
   }
   
@@ -33,7 +41,7 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
            or23 = exp(`lor[2,3]`)
            # or31 = 1/or13,
            # or32 = or13/or12
-           ) |> 
+    ) |> 
     reframe("{treatment_nm}" := quantile(or13, c(0.25, 0.5, 0.75)),
             "Pfizer" = quantile(!!as.name(OR_nm), c(0.25, 0.5, 0.75)),
             q = c(2.5, 50, 97.5)) |>
@@ -72,21 +80,17 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
   maxyscale <- max(plot_dat$X97.5)*1.3
   txnames <- plot_dat$treatment
   charttitle <- glue::glue("Hierarchical RE NMA model, {outcome}")
-
-  ytitle2 <- c("Probability of Covid-19 infection")
   
-  ggplot(plot_dat,
-         aes(
-           x = treatment,
-           y = X50,
-           ymin = X2.5,
-           ymax = X97.5,
-           colour = treatment)) +
+  gg <- 
+    ggplot(plot_dat,
+           aes(
+             x = treatment,
+             y = X50,
+             ymin = X2.5,
+             ymax = X97.5,
+             colour = treatment)) +
     geom_pointrange() +
     coord_flip() +
-    geom_text(aes(label = ORlabel, y = maxyscale * 0.9),
-              size = 3,
-              color = 'black') +
     xlab("Treatment") +
     ylab(ytitle) +
     scale_colour_manual(values = txcolor) +
@@ -96,8 +100,24 @@ forest_plot <- function(outcome, vs_placebo = TRUE) {
     theme(axis.title.y = element_text(vjust = 0.2)) +
     theme(panel.background = element_rect(fill = 'white', color = 'white')) +
     theme(axis.line = element_line(colour = "black", linewidth = 0.1)) +
-    scale_y_continuous(expand = c(0, 0), limits = c(0, max(1, maxyscale))) +
-    # scale_x_discrete(labels = txnames[2:nt]) +
+    scale_x_discrete(labels = new_labels) +
     theme(legend.position = "none") +
     geom_hline(yintercept = c(1), linetype = "dotted")
+  
+  if (logOR) {
+    gg +
+      # scale_y_log10() +
+      scale_y_continuous(trans = "log10",
+                         expand = expansion(add = 0.5)) + #,
+                         # limits = c(0, max(1, maxyscale))) +
+      geom_text(aes(label = ORlabel, y = maxyscale + 0.5),
+                size = 3,
+                color = 'black')
+  } else {
+    gg +
+      scale_y_continuous(expand = c(0, 0), limits = c(0, max(1, maxyscale))) +
+      geom_text(aes(label = ORlabel, y = maxyscale * 0.9),
+                size = 3,
+                color = 'black')
+  }
 }
