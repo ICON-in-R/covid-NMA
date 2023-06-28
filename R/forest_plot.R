@@ -111,13 +111,17 @@ forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
                          expand = expansion(add = 0.5)) + #,
                          # limits = c(0, max(1, maxyscale))) +
       geom_text(aes(label = ORlabel, y = maxyscale + 0.5),
-                size = 3,
-                color = 'black')
+                size = 3, color = 'black') +
+      geom_text(aes(label = c("favours treatment", "favours placebo"),
+                    x = 0.5, y = c(0.9, 1.1)), hjust = c(1,0),
+                size = 3, color = 'black')
   } else {
     gg +
       scale_y_continuous(expand = c(0, 0), limits = c(0, max(1, maxyscale))) +
       geom_text(aes(label = ORlabel, y = maxyscale * 0.9),
-                size = 3,
-                color = 'black')
+                size = 3, color = 'black') +
+      geom_text(aes(label = c("favours treatment", "favours placebo"),
+                    x = 0.5, y = c(0.9, 1.1)), hjust = c(1,0),
+                size = 3, color = 'black')
   }
 }
