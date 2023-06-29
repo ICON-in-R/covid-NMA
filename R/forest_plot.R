@@ -26,11 +26,13 @@ forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
     OR_nm <- "or12"
     ytitle <- "Odds Ratio vs. Placebo/Unvaccinated"
     txcolor <- c("#00CCFF", "#FF0000")
+    favours_label <- c("favours treatment", "favours placebo")
   } else {
     treatment_nm <- "Placebo"
     OR_nm <- "or23"
     ytitle <- c("Odds Ratio of Spikevax vs. Other")
     txcolor <- c("#000000", "#00CCFF")
+    favours_label <- c("favours Spikevax", "favours alternative")
   }
   
   plot_dat <- 
@@ -79,7 +81,9 @@ forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
   
   maxyscale <- max(plot_dat$X97.5)*1.3
   txnames <- plot_dat$treatment
-  charttitle <- glue::glue("Hierarchical RE NMA model, {outcome}")
+  
+  outcome_with_spaces <- gsub("_", " ", outcome)
+  charttitle <- glue::glue("Hierarchical RE NMA model, {outcome_with_spaces}")
   
   gg <- 
     ggplot(plot_dat,
@@ -109,19 +113,30 @@ forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
       # scale_y_log10() +
       scale_y_continuous(trans = "log10",
                          expand = expansion(add = 0.5)) + #,
-                         # limits = c(0, max(1, maxyscale))) +
+      # limits = c(min(X2.5), max(1, maxyscale))) +
       geom_text(aes(label = ORlabel, y = maxyscale + 0.5),
                 size = 3, color = 'black') +
-      geom_text(aes(label = c("favours treatment", "favours placebo"),
+      geom_text(aes(label = favours_label,
                     x = 0.5, y = c(0.9, 1.1)), hjust = c(1,0),
-                size = 3, color = 'black')
+                size = 3, color = 'black') +
+      geom_text(aes(label = paste("DIC    pD \n",
+                                  paste(c(DIC =  round(jagsfit$BUGSoutput$DIC, 2),
+                                          pD = round(jagsfit$BUGSoutput$pD, 2)), collapse = " ")),
+                    x = 0.5, y =  max(1, maxyscale) + 10),
+                hjust = 1, size = 3, color = 'black')
+    
   } else {
     gg +
-      scale_y_continuous(expand = c(0, 0), limits = c(0, max(1, maxyscale))) +
+      scale_y_continuous(expand = c(0, 0), limits = c(0, max(1, maxyscale) + 1)) +
       geom_text(aes(label = ORlabel, y = maxyscale * 0.9),
                 size = 3, color = 'black') +
-      geom_text(aes(label = c("favours treatment", "favours placebo"),
+      geom_text(aes(label = favours_label,
                     x = 0.5, y = c(0.9, 1.1)), hjust = c(1,0),
-                size = 3, color = 'black')
+                size = 3, color = 'black') +
+          geom_text(aes(label = paste("DIC    pD \n",
+                                      paste(c(DIC =  round(jagsfit$BUGSoutput$DIC, 2),
+                                              pD = round(jagsfit$BUGSoutput$pD, 2)), collapse = " ")),
+                        x = 0.5, y =  max(1, maxyscale) + 1),
+                    hjust = 1, size = 3, color = 'black')
   }
 }
