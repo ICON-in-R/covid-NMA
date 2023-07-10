@@ -5,8 +5,8 @@
 "8",30,"Retrospective",2,2,55893,17636,NA,4169,466,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
 "10",40,"Retrospective",2,3,14697,2873,3380,197,3,4,1,2,3,"Unvaccinated/Placebo","PfizerBiontech","Moderna"
 "13",50,"Retrospective",2,2,41029,33915,NA,565,432,NA,2,3,NA,"PfizerBiontech","Moderna",NA
-"15",55,"Retrospective",2,2,43259,15895,NA,610,257,NA,2,3,NA,"PfizerBiontech","Moderna",NA
-"17",105,"Retrospective",2,2,33,110,NA,3,48,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"15",105,"Retrospective",2,2,33,110,NA,3,48,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"17",151,"Retrospective",2,2,67780,79517,NA,1952,1776,NA,2,3,NA,"PfizerBiontech","Moderna",NA
 "19",362,"Retrospective",2,2,6080,4588,NA,143,73,NA,2,3,NA,"PfizerBiontech","Moderna",NA
 "21",378,"Retrospective",2,2,6423,2993,NA,78,27,NA,2,3,NA,"PfizerBiontech","Moderna",NA
 "23",1435,"Retrospective",2,2,946,688,NA,290,133,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
