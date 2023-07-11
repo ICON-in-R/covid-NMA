@@ -14,7 +14,6 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
     xl_data |> 
     data.frame(check.names = TRUE) |>
     dplyr::filter(Included.in.NMA == 1,
-                  not_NMA == 0,  # extra created column
                   if (basecase) Base.case == "X" else FALSE, 
                   get({{outcome_nm}}) == "Y") |>                 
     select(Ref.ID, Study.design, Design.ID, Intervention.name..standardized., Total.N, n.of.events) |> 
