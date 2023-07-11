@@ -7,11 +7,13 @@ library(dplyr)
 # read in raw data
 
 dir_data <- "../../ICON/data/"
-  
-filename <-
-  paste0(dir_data, "27062023-4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies.xlsx")
 
-xl_data <- readxl::read_xlsx(path = filename,
+# filename <- "27062023-4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies.xlsx"
+filename <- "4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v2.0 10JUL2023.xlsx"
+
+fileloc <- paste0(dir_data, filename)
+
+xl_data <- readxl::read_xlsx(path = fileloc,
                              sheet = "for Nathan",
                              range = "A3:BW743")
 
@@ -19,7 +21,7 @@ xl_data <- readxl::read_xlsx(path = filename,
 
 colnamesA3 <- names(xl_data)
 
-colnamesA2 <- readxl::read_xlsx(path = filename,
+colnamesA2 <- readxl::read_xlsx(path = fileloc,
                                 sheet = "for Nathan",
                                 range = "A2:BW743") |> colnames()
 
