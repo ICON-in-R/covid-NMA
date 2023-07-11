@@ -8,8 +8,7 @@ library(dplyr)
 
 dir_data <- "../../ICON/data/"
 
-# filename <- "27062023-4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies.xlsx"
-filename <- "4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v2.0 10JUL2023.xlsx"
+filename <- "4428_0013_Covid_Vaccine_Spikevax_DAT_All included studies_v1.2_11July2023.xlsx"
 
 fileloc <- paste0(dir_data, filename)
 
