@@ -3,28 +3,44 @@
 #'
 #' If a design is missing in the data, include dummy entry
 #' 
-#' @param dat_raw 
+#' @param dat_raw BUGS input array
 #'
 #' @return
 #' @export
 #'
 add_dummy_design_data <- function(dat_raw) {
+  dat <- dat_raw
   
   if (!1 %in% dat_raw$Design.ID) {
-    new_row <- data.frame(0, -1, "Randomized clinical trial", 1, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-    names(new_row) <- names(dat_raw)
-    dat_raw <- rbind(new_row, dat_raw)
+    dat <- rbind(dat, NA)
+    ns <- nrow(dat)
+    dat[ns, c("X", "na", "n1", "n2", "r1", "r2", "t1", "t2")] <-
+            c(0,    2,    2,    2,    1,    1,    1,    2)
+    dat$Ref.ID[ns] <- -1
+    dat$Study.design[ns] <- "Randomized clinical trial"
+    dat$Design.ID[ns] <- 1
   }
   if (!3 %in% dat_raw$Design.ID) {
-    new_row <- data.frame(0, -3, "Prospective observational study", 3, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-    names(new_row) <- names(dat_raw)
-    dat_raw <- rbind(new_row, dat_raw)
+    dat <- rbind(dat, NA)
+    ns <- nrow(dat)
+    dat[ns, c("X", "na", "n1", "n2", "r1", "r2", "t1", "t2")] <-
+            c(0,    2,    2,    2,    1,    1,    1,    2)
+    dat$Ref.ID[ns] <- -3
+    dat$Study.design[ns] <- "Prospective observational study"
+    dat$Design.ID[ns] <- 3
   }
   if (!4 %in% dat_raw$Design.ID) {
-    new_row <- data.frame(0, -4, "Test-negative", 4, 2, 2, 2, NA_integer_, 1, 1, NA_integer_, 1, 2, NA_integer_, NA_character_, NA_character_, NA_character_)
-    names(new_row) <- names(dat_raw)
-    dat_raw <- rbind(new_row, dat_raw)
+    dat <- rbind(dat, NA)
+    ns <- nrow(dat)
+    dat[ns, c("X", "na", "n1", "n2", "r1", "r2", "t1", "t2")] <-
+            c(0,    2,    2,    2,    1,    1,    1,    2)
+    dat$Ref.ID[ns] <- -4
+    dat$Study.design[ns] <- "Test-negative"
+    dat$Design.ID[ns] <- 4
   }
   
-  dat_raw  
+  dat  
 }
+
+
+
