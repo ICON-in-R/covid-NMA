@@ -14,9 +14,8 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
     xl_data |> 
     data.frame(check.names = TRUE) |>
     dplyr::filter(Included.in.NMA == 1,
-                  if (basecase) Base.case == "X" else FALSE, 
+                  if (basecase) Base.case == "X" else FALSE,
                   get({{outcome_nm}}) == "Y") |>                 
-    select(Ref.ID, Study.design, Design.ID, Intervention.name..standardized., Total.N, n.of.events, Event.rate) |> 
     mutate(
       n.of.events = as.numeric(ifelse(n.of.events == "NR", NA, n.of.events)),
       Total.N = as.numeric(ifelse(Total.N == "NR", NA, Total.N)),
@@ -26,7 +25,6 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
       Total.N = round(Total.N, 0),
       Intervention.name..standardized. = factor(Intervention.name..standardized.,
                                                 levels = tx_levels),
-      tx_id = as.numeric(Intervention.name..standardized.),
       Study.design = ifelse(Study.design %in% c("Prospective cohort study",
                                                 "Prospective, observational study"),
                             yes = "Prospective",
@@ -36,6 +34,8 @@ clean_covid_data <- function(xl_data, outcome_nm, basecase, tx_levels) {
                                             "Retrospective observational study"),
                                         yes = "Retrospective",
                                         no = Study.design))) |> 
+    select(Ref.ID, Study.design, Design.ID, Intervention.name..standardized., Total.N, n.of.events) |> 
+    mutate(tx_id = as.numeric(Intervention.name..standardized.)) |> 
     group_by(Ref.ID) |>
     arrange(tx_id) |> 
     mutate(arm = 1:n(),

@@ -1,0 +1,6 @@
+"","Ref.ID","Study.design","Design.ID","na","n1","n2","r1","r2","t1","t2","tx_name.1","tx_name.2"
+"1",105,"Retrospective",2,2,33,110,6,5,1,2,"Unvaccinated/Placebo","PfizerBiontech"
+"3",338,"Retrospective",2,2,121,213,29,40,2,3,"PfizerBiontech","Moderna"
+"5",2198,"Retrospective",2,2,45,21,4,2,2,3,"PfizerBiontech","Moderna"
+"7",2879,"Retrospective",2,2,194,226,1,2,1,2,"Unvaccinated/Placebo","PfizerBiontech"
+"9",431,"Prospective observational study",3,2,327,38,0,0,2,3,"PfizerBiontech","Moderna"

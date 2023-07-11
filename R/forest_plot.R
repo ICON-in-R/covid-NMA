@@ -1,15 +1,19 @@
 
 #' Forest plot
 #'
-#' @param outcome String
-#' @param vs_placebo Placebo as comparison otherwise Moderna vs all other comparisons
-#' @param logOR Scale
+#' @param outcome Name; string
+#' @param vs_placebo Placebo as comparison otherwise Moderna vs all other comparisons; logical
+#' @param logOR Scale; logical
+#' @param vacc_effic Vaccine efficiency; logical
 #'
 #' @import dplyr reshape2
 #' @return
 #' @export
 #'
-forest_plot <- function(outcome, vs_placebo = TRUE, logOR = FALSE) {
+forest_plot <- function(outcome,
+                        vs_placebo = TRUE,
+                        logOR = FALSE,
+                        vacc_effic = FALSE) {
   
   new_labels <- 
     c(Pfizer = "Comirnaty",

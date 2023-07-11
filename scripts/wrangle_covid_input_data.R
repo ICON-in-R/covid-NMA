@@ -40,7 +40,8 @@ tx_levels <- c("Unvaccinated/Placebo", "PfizerBiontech", "Moderna")
 
 # binary outcome variable
 outcomes <-
-  c("COVID.infection", "Symptomatic.infection", "Severe.Infection.All", "Hospitalizations", "Deaths")
+  # c("COVID.infection", "Symptomatic.infection", "Severe.Infection.All", "Hospitalizations", "Deaths")
+  c("COVID.infection", "Symptomatic.infection", "Severe.infections..WHO.ICU.addmission.", "Hospitalizations", "Deaths")
 
 ####################
 # create input data
