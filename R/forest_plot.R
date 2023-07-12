@@ -26,11 +26,20 @@ forest_plot <- function(outcome,
   BUGSoutput <- jagsfit$BUGSoutput
   simsmatrix <- BUGSoutput$sims.matrix
   
+  outcome_text <- 
+    switch(outcome,
+           COVID_infection = "Covid-19 infection",
+           Symptomatic_infection = "Symptomatic Covid-19 infection",
+           Severe_Infection_All = "Severe Covid-19 infection",
+           Severe_infections__WHO_ICU_addmission_ = "Severe Covid-19 infection",
+           Hospitalizations = "Hospitalisation due to Covid-19 infection",
+           Deaths = "Death after Covid-19 infection")
+  
   if (vs_placebo) {
     treatment_nm <- "Moderna"
     OR_nm <- "or12"
     ytitle <- if (vacc_effic) {
-      "Vaccine efficacy against Placebo/Unvaccinated"
+      glue::glue("Vaccine efficacy against {outcome_text}")
     } else {
       "Odds Ratio vs. Placebo/Unvaccinated"
     }
@@ -95,8 +104,7 @@ forest_plot <- function(outcome,
   maxyscale <- max(plot_dat$X97.5)*1.3
   txnames <- plot_dat$treatment
   
-  outcome_with_spaces <- gsub("_", " ", outcome)
-  charttitle <- glue::glue("Hierarchical RE NMA model, {outcome_with_spaces}")
+  charttitle <- glue::glue("Hierarchical RE NMA model, {outcome_text}")
   
   gg <- 
     ggplot(plot_dat,
@@ -108,7 +116,7 @@ forest_plot <- function(outcome,
              colour = treatment)) +
     geom_pointrange() +
     coord_flip() +
-    xlab("Treatment") +
+    xlab("Intervention") +
     ylab(ytitle) +
     scale_colour_manual(values = txcolor) +
     labs(title = charttitle) +

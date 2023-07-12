@@ -1,13 +1,13 @@
-"","Ref.ID","Study.design","Design.ID","na","n1","n2","n3","n4","r1","r2","r3","r4","t1","t2","t3","t4","tx_name.1","tx_name.2","tx_name.3","tx_name.4"
-"1",2,"Retrospective",2,3,1239,375,632,NA,2,0,0,NA,1,2,3,NA,"Unvaccinated/Placebo","PfizerBiontech","Moderna",NA
-"4",28,"Retrospective",2,2,12169,23037,NA,NA,53,99,NA,NA,2,3,NA,NA,"PfizerBiontech","Moderna",NA,NA
-"6",30,"Retrospective",2,2,55893,17636,NA,NA,998,91,NA,NA,1,2,NA,NA,"Unvaccinated/Placebo","PfizerBiontech",NA,NA
-"8",50,"Retrospective",2,2,41029,33915,NA,NA,81,65,NA,NA,2,3,NA,NA,"PfizerBiontech","Moderna",NA,NA
-"10",105,"Retrospective",2,4,33,33,110,110,16,6,29,5,1,1,2,2,"Unvaccinated/Placebo","Unvaccinated/Placebo","PfizerBiontech","PfizerBiontech"
-"14",338,"Retrospective",2,4,121,121,213,213,84,29,134,40,2,2,3,3,"PfizerBiontech","PfizerBiontech","Moderna","Moderna"
-"18",1435,"Retrospective",2,2,946,688,NA,NA,178,84,NA,NA,1,2,NA,NA,"Unvaccinated/Placebo","PfizerBiontech",NA,NA
-"20",2198,"Retrospective",2,2,45,21,NA,NA,11,5,NA,NA,2,3,NA,NA,"PfizerBiontech","Moderna",NA,NA
-"22",2879,"Retrospective",2,2,194,226,NA,NA,17,9,NA,NA,1,2,NA,NA,"Unvaccinated/Placebo","PfizerBiontech",NA,NA
-"24",8027,"Retrospective",2,2,275,157,NA,NA,0,0,NA,NA,2,3,NA,NA,"PfizerBiontech","Moderna",NA,NA
-"26",431,"Prospective observational study",3,2,327,38,NA,NA,7,1,NA,NA,2,3,NA,NA,"PfizerBiontech","Moderna",NA,NA
-"28",6,"Test-negative",4,3,9537,6227,4337,NA,1127,272,138,NA,1,2,3,NA,"Unvaccinated/Placebo","PfizerBiontech","Moderna",NA
+"","Ref.ID","Study.design","Design.ID","na","n1","n2","n3","r1","r2","r3","t1","t2","t3","tx_name.1","tx_name.2","tx_name.3"
+"1",2,"Retrospective",2,3,1239,375,632,2,0,0,1,2,3,"Unvaccinated/Placebo","PfizerBiontech","Moderna"
+"4",28,"Retrospective",2,2,12169,23037,NA,53,99,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"6",30,"Retrospective",2,2,55893,17636,NA,998,91,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"8",50,"Retrospective",2,2,41029,33915,NA,81,65,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"10",105,"Retrospective",2,2,33,110,NA,16,29,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"12",338,"Retrospective",2,2,121,213,NA,84,134,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"14",1435,"Retrospective",2,2,946,688,NA,178,84,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"16",2198,"Retrospective",2,2,45,21,NA,11,5,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"18",2879,"Retrospective",2,2,194,226,NA,17,9,NA,1,2,NA,"Unvaccinated/Placebo","PfizerBiontech",NA
+"20",8027,"Retrospective",2,2,275,157,NA,0,0,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"22",431,"Prospective observational study",3,2,327,38,NA,7,1,NA,2,3,NA,"PfizerBiontech","Moderna",NA
+"24",6,"Test-negative",4,3,9537,6227,4337,1127,272,138,1,2,3,"Unvaccinated/Placebo","PfizerBiontech","Moderna"
