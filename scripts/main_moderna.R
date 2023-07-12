@@ -15,7 +15,8 @@ library(dplyr)
 # select outcome
 
 outcome_names <-
-  c("COVID_infection", "Symptomatic_infection", "Severe_infections__WHO_ICU_addmission_", "Hospitalizations", "Deaths")
+  c("COVID.infection", "Symptomatic.infection", "Severe.Infection.All",
+    "Severe.infections..WHO.ICU.addmission.", "Hospitalizations", "Deaths")
 
 outcome <- outcome_names[5]
 dat_raw <- read.csv(file = here::here(glue::glue("data/BUGS_input_data_{outcome}.csv")))

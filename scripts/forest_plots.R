@@ -13,7 +13,8 @@ library(dplyr)
 
 
 outcome_names <-
-  c("COVID_infection", "Symptomatic_infection", "Severe_infections__WHO_ICU_addmission_", "Hospitalizations", "Deaths")
+  c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All",
+    "Severe_infections__WHO_ICU_addmission_", "Hospitalizations", "Deaths")
 
 for (i in outcome_names) {
   forest_plot(i)
