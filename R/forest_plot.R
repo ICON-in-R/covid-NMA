@@ -4,7 +4,7 @@
 #' @param outcome Name; string
 #' @param vs_placebo Placebo as comparison otherwise Moderna vs all other comparisons; logical
 #' @param logOR Scale; logical
-#' @param vacc_effic Vaccine efficiency; logical
+#' @param vacc_effic Vaccine efficiency, defined as 1-OR; logical
 #'
 #' @import dplyr reshape2
 #' @return
@@ -14,12 +14,13 @@ forest_plot <- function(outcome,
                         vs_placebo = TRUE,
                         logOR = FALSE,
                         vacc_effic = FALSE) {
-  
+  # rename vaccines
   new_labels <- 
     c(Pfizer = "Comirnaty",
       Moderna = "Spikevax",
       Placebo = "Placebo/Unvaccinated")
   
+  # output from jags NMA model
   load(glue::glue("data/jagsfit_{outcome}.RData"))
   
   BUGSoutput <- jagsfit$BUGSoutput
@@ -28,7 +29,11 @@ forest_plot <- function(outcome,
   if (vs_placebo) {
     treatment_nm <- "Moderna"
     OR_nm <- "or12"
-    ytitle <- "Odds Ratio vs. Placebo/Unvaccinated"
+    ytitle <- if (vacc_effic) {
+      "Vaccine efficacy against Placebo/Unvaccinated"
+    } else {
+      "Odds Ratio vs. Placebo/Unvaccinated"
+    }
     txcolor <- c("#00CCFF", "#FF0000")
     favours_label <- c("favours treatment", "favours placebo")
   } else {
@@ -44,9 +49,12 @@ forest_plot <- function(outcome,
     as.data.frame() |> 
     mutate(or12 = exp(`lor[1,2]`),
            or13 = exp(`lor[1,3]`),
-           or23 = exp(`lor[2,3]`)
+           or23 = exp(`lor[2,3]`),
            # or31 = 1/or13,
            # or32 = or13/or12
+           or12 = if(vacc_effic) 1-or12 else or12,
+           or13 = if(vacc_effic) 1-or13 else or13,
+           or23 = if(vacc_effic) 1-or23 else or23
     ) |> 
     reframe("{treatment_nm}" := quantile(or13, c(0.25, 0.5, 0.75)),
             "Pfizer" = quantile(!!as.name(OR_nm), c(0.25, 0.5, 0.75)),
@@ -56,7 +64,8 @@ forest_plot <- function(outcome,
     dcast(treatment ~ q) |> 
     data.frame(check.names = TRUE) |> 
     mutate(treatment = factor(treatment, levels = c("Placebo", "Pfizer", "Moderna"))) |> 
-    arrange(treatment)
+    arrange(treatment) |> 
+    mutate(X2.5 = if(vacc_effic) max(0, X2.5) else X2.5)    #TODO: hack so that ggplot doesn't remove segment 
   
   nt <- 3
   

@@ -1,5 +1,7 @@
 
 # forest plots
+# for log OR, placebo as reference,
+# moderna vs reference, 1-OR
 
 library(ggplot2)
 library(RColorBrewer)
@@ -11,7 +13,7 @@ library(dplyr)
 
 
 outcome_names <-
-  c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
+  c("COVID_infection", "Symptomatic_infection", "Severe_infections__WHO_ICU_addmission_", "Hospitalizations", "Deaths")
 
 for (i in outcome_names) {
   forest_plot(i)
@@ -50,14 +52,13 @@ for (i in outcome_names) {
     units = "in",
     dpi = 640)
   
-  
-  # forest_plot(i, vs_placebo = FALSE, vacc_effic = TRUE)
-  # 
-  # ggsave(
-  #   filename = glue::glue("plots/forest_plot_vs_Moderna_{i}_vacc_effic.jpg"),
-  #   width = 8,
-  #   height = 5,
-  #   units = "in",
-  #   dpi = 640)
+  forest_plot(i, vacc_effic = TRUE)
+
+  ggsave(
+    filename = glue::glue("plots/forest_plot_vs_Moderna_{i}_vacc_effic.jpg"),
+    width = 8,
+    height = 5,
+    units = "in",
+    dpi = 640)
 }
 

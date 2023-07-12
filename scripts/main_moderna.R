@@ -15,10 +15,9 @@ library(dplyr)
 # select outcome
 
 outcome_names <-
-  # c("COVID_infection", "Symptomatic_infection", "Severe_Infection_All", "Hospitalizations", "Deaths")
   c("COVID_infection", "Symptomatic_infection", "Severe_infections__WHO_ICU_addmission_", "Hospitalizations", "Deaths")
 
-outcome <- outcome_names[3]
+outcome <- outcome_names[5]
 dat_raw <- read.csv(file = here::here(glue::glue("data/BUGS_input_data_{outcome}.csv")))
 
 dat_raw <- add_dummy_design_data(dat_raw)
