@@ -44,7 +44,7 @@ forest_plot <- function(outcome,
       "Odds Ratio vs. Placebo/Unvaccinated"
     }
     txcolor <- c("#00CCFF", "#FF0000")
-    favours_label <- c("favours treatment", "favours placebo")
+    favours_label <- c("favours intervention", "favours placebo")
   } else {
     treatment_nm <- "Placebo"
     OR_nm <- "or23"
