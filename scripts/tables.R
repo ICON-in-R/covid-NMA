@@ -90,22 +90,10 @@ for (outcome in outcome_names) {
   
   tab_sucra <- 
     data.frame(Intervention = tx_levels,
-               mean = c(
+               SUCRA = c(
                  round(mean(simsmatrix[, "SUCRA[1]"]), 2),
                  round(mean(simsmatrix[, "SUCRA[2]"]), 2),
-                 round(mean(simsmatrix[, "SUCRA[3]"]), 2)),
-               low = c(
-                 round(quantile(simsmatrix[, "SUCRA[1]"], probs = 0.025), 2),
-                 round(quantile(simsmatrix[, "SUCRA[2]"], probs = 0.025), 2),
-                 round(quantile(simsmatrix[, "SUCRA[3]"], probs = 0.025), 2)),
-               upp = c(
-                 round(quantile(simsmatrix[, "SUCRA[1]"], probs = 0.975), 2),
-                 round(quantile(simsmatrix[, "SUCRA[2]"], probs = 0.975), 2),
-                 round(quantile(simsmatrix[, "SUCRA[3]"], probs = 0.975), 2))) |>
-    # concatenate values with bounds in brackets
-    mutate('SUCRA'
-           = paste0(`mean`, " (", `low`, ",", `upp`, ")")) |> 
-    select(-mean, -low, -upp) |> 
+                 round(mean(simsmatrix[, "SUCRA[3]"]), 2))) |> 
     # rename vaccines
     mutate(Intervention = stringr::str_replace_all(Intervention, full_tx_levels)) 
   
