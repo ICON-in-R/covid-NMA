@@ -52,7 +52,7 @@ for (outcome in outcome_names) {
     select(-`2.5`, -`50`, -`97.5`) |> 
     dcast(comp ~ ref) |> 
     # rename vaccines
-    mutate(comp = stringr::str_replace_all(tab_dat$comp, full_tx_levels)) |> 
+    mutate(comp = stringr::str_replace_all(comp, full_tx_levels)) |> 
     rename_with(.cols = names(full_tx_levels), ~full_tx_levels)
     
   write.csv(tab_dat, file = glue::glue("tables/TableOR_{outcome}.csv"))
@@ -86,18 +86,18 @@ for (outcome in outcome_names) {
   
   write.csv(tab_better, file = glue::glue("tables/TableBetter_{outcome}.csv"))
   
-  ## SUCRE TABLE
+  ## SUCRA TABLE
   
-  tab_sucre <- 
+  tab_sucra <- 
     data.frame(Intervention = tx_levels,
-               SUCRE = c(
+               SUCRA = c(
                  round(mean(simsmatrix[, "SUCRA[1]"] == 1), 2),
                  round(mean(simsmatrix[, "SUCRA[2]"] == 1), 2),
                  round(mean(simsmatrix[, "SUCRA[3]"] == 1), 2))) |> 
     # rename vaccines
-    mutate(Intervention = stringr::str_replace_all(tab_dat$comp, full_tx_levels)) 
+    mutate(Intervention = stringr::str_replace_all(Intervention, full_tx_levels)) 
   
-  write.csv(tab_sucre, file = glue::glue("tables/table_sucre_{outcome}.csv"))
+  write.csv(tab_sucra, file = glue::glue("tables/table_sucra_{outcome}.csv"))
   
   ## VACCINE EFFICACY TABLE
   
@@ -119,7 +119,7 @@ for (outcome in outcome_names) {
            = paste0(`50`, " (", `2.5`, ",", `97.5`, ")")) |> 
     select(-`2.5`, -`50`, -`97.5`) |> 
     # rename vaccines
-    mutate(Intervention = stringr::str_replace_all(tab_dat$comp, full_tx_levels)) 
+    mutate(Intervention = stringr::str_replace_all(Intervention, full_tx_levels)) 
   
   write.csv(tab_vacc_effic, file = glue::glue("tables/table_vacc_effic_{outcome}.csv"))
 }
