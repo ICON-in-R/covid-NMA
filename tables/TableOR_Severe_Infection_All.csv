@@ -1,4 +1,4 @@
-"","comp","placebo","pfizer","moderna"
-"1","placebo","1 (1,1)",NA,NA
-"2","pfizer","0.36 (0.29,0.46)","1 (1,1)",NA
-"3","moderna","0.28 (0.22,0.37)","0.8 (0.6,1.07)","1 (1,1)"
+"","comp","Placebo/Unvaccinated","Comirnaty","Spikevax"
+"1","Placebo/Unvaccinated","1 (1,1)",NA,NA
+"2","Comirnaty","0.35 (0.29,0.45)","1 (1,1)",NA
+"3","Spikevax","0.28 (0.22,0.36)","0.78 (0.59,1.02)","1 (1,1)"
